@@ -1,3 +1,4 @@
+package re000;
 public class LazySingletonVariants {
 
     public static void main(String[] args) {

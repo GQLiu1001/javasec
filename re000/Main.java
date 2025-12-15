@@ -1,4 +1,4 @@
-
+package re000;
 public class Main {
     // class : java代码的基本单元
     // 类的静态成员变量（类级别，所有对象共享，不依赖对象）
