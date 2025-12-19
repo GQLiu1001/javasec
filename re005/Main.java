@@ -155,3 +155,27 @@ class Student {
 
 }
     // endregion
+
+    // region this
+    // 代表的是当前使用对象的地址
+class Ob{
+    int age;
+    // 在 static 方法中，你根本不需要对象就可以调用它（比如直接用 Ob.fun()）。
+    // 此时，根本没有“当前对象”，this 指向的是一片虚无。
+    // Java 编译器为了防止这种逻辑混乱，强制规定“静态方法中不能使用 this”。
+
+    // static void fun(){
+    void fun(){
+        int age = 10;
+        System.out.println(age); // 10
+        System.out.println(this.age); // ob.fun() 的ob的age 初始化为0
+    }
+}
+class Fu{
+    void go(){
+        Ob ob = new Ob();
+        ob.fun();
+    }
+}
+
+    // endregion
