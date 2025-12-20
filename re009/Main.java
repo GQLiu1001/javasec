@@ -45,7 +45,6 @@ public class Main {
         HashiqiDog hashiqi = new HashiqiDog();
         taidi.eat();
         hashiqi.eat();
-        
 
     }
 }
@@ -76,9 +75,10 @@ class LihuaCat extends Cat {
 
 class Dog extends Animal {
     @Override
-    void eat(){
+    void eat() {
         System.out.println("就要吃狗粮");
     }
+
     void gurd() {
         System.out.println("看家");
     }
@@ -86,7 +86,7 @@ class Dog extends Animal {
 
 class HashiqiDog extends Dog {
     @Override
-    void eat(){
+    void eat() {
         super.eat(); // HashiqiDog的eat为父级的eat
     }
 
@@ -105,3 +105,5 @@ class TaidiDog extends Dog {
         System.out.println(this.getClass().getName() + "蹭一蹭");
     }
 }
+
+// endregion
