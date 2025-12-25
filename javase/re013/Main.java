@@ -34,7 +34,7 @@ public class Main {
         // endregion
 
         // region 匿名内部类
-        // 隐藏了名字的内部类
+        //  
         FuncA abs = new FuncA() {
             void fucn() {
                 System.out.println("hello");

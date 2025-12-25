@@ -23,7 +23,7 @@ public class Main {
     // super 允许 T 及其父类 (更宽泛的类型)
     // PECS: Consumer Super (如果是用来消费/存入数据的，用 super)
     // 可以写入 添加
-    <T extends Cat> void checkCat(T cat) {
+    static <T extends Cat> void checkCat(T cat) {
         System.out.println(cat);
     }
 

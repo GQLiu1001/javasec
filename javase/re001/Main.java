@@ -35,6 +35,11 @@ public class Main {
 
         Object o2 = 123; // 真实对象：Integer（自动装箱）
         // Long l = (Long) o2; // ❌ ClassCastException（真实是 Integer 不是 Long）
+        Integer i1 = 1;
+        Long l2 = i1.longValue();
+        
+        Long l1 = Long.valueOf(i1);
+        System.out.println("l1 = " + l1);
 
         // endregion
 
