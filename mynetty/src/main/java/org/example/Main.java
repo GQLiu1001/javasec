@@ -1,6 +1,7 @@
 package org.example;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -12,7 +13,8 @@ import java.nio.charset.StandardCharsets;
 // clear() 的核心作用：为下一次channel.read(buffer)（写操作）腾出 “可写空间”，避免指针位置错误导致写不进数据。
 public class Main {
     public static void main(String[] args) throws IOException {
-
+        // 注意 FileInputStream 只能读 FileOutputStream 只能写 RandomAccessFile 根据构造时的读写模式决定
+        // FileChannel 只能工作在阻塞模式下
         // 1. 打开文件通道（try-with-resources 自动关闭资源）
         try (FileChannel channel = new FileInputStream("mynetty/data.txt").getChannel()) {
             // 2. 分配1024字节的缓冲区（默认是写模式：position=0，limit=1024）
@@ -81,6 +83,66 @@ public class Main {
         while (buffer2.hasRemaining()) {
             byte b3 = buffer2.get();
             System.out.println("b = " + b3);
+        }
+
+
+        try (FileChannel channel = new FileInputStream("mynetty/data.txt").getChannel()) {
+
+            ByteBuffer buffer = ByteBuffer.allocate(1024);
+
+            while (true) {
+                int readBytes = channel.read(buffer);
+
+                if (readBytes == -1) {
+                    break; // 文件读完
+                }
+
+                // 切换为读模式
+                buffer.flip();
+
+                // 处理 buffer 中的数据
+                while (buffer.hasRemaining()) {
+                    byte b = buffer.get();
+                    // 处理 b
+                }
+
+                // 清空 buffer，准备下一次写入
+                buffer.clear();
+            }
+        }
+
+
+        try (
+                FileChannel in = new FileInputStream("mynetty/data.txt").getChannel();
+                FileChannel out = new FileOutputStream("mynetty/b.txt").getChannel()
+        ) {
+            ByteBuffer buffer = ByteBuffer.allocate(1024);
+
+            while (in.read(buffer) != -1) {
+                buffer.flip();          // 切到读模式
+                out.write(buffer);      // 从 buffer 读
+                buffer.clear();         // 清空准备下一轮
+            }
+        }
+
+        try (
+                FileChannel in = new FileInputStream("mynetty/data.txt").getChannel();
+                FileChannel out = new FileOutputStream("mynetty/c.txt").getChannel()
+        ) {
+            in.transferTo(0, in.size(), out);
+
+        }
+
+        // 触发多次循环是由「操作系统 + JVM + 底层实现」共同决定的。
+        try (
+                FileChannel in = new FileInputStream("mynetty/data.txt").getChannel();
+                FileChannel out = new FileOutputStream("mynetty/d.txt").getChannel()
+        ) {
+            long size = in.size();
+
+            for (long reamin = size; reamin > 0;) {
+                reamin -= in.transferTo((size - reamin), reamin , out);
+            }
         }
     }
 }

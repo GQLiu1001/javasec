@@ -156,3 +156,28 @@ classjava.nio.DirectByteBuffer
 | `mark()`  | 标记                             |
 | `reset()` | 重置 position 到上次做标记的地方 |
 | `get(i)`  | 读 position 不移动               |
+
+# Selector
+
+| Selector 事件 | 内核关注的缓冲区 / 状态 | send buffer 状态 |
+| ------------- | ----------------------- | ---------------- |
+| `OP_READ`     | **recv buffer 有数据**  | ❌ 不关心         |
+| `OP_WRITE`    | **send buffer 有空间**  | ✅ 核心判断       |
+| `OP_ACCEPT`   | TCP 半连接 / 全连接队列 | ❌ 不关心         |
+| `OP_CONNECT`  | TCP 连接建立状态        | ❌ 不关心         |
+
+接收客户端信息
+
+内核流程
+
+```java
+客户端发送数据
+↓
+数据到达本机
+↓
+进入 socket recv buffer
+↓
+recv buffer 从 空 → 非空
+↓
+Selector 触发 OP_READ
+```
