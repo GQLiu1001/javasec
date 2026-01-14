@@ -1,11 +1,8 @@
-package org.example;
-
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 // clear() 不是 “清空数据”，是重置 ByteBuffer 的指针，回到 “可以被写入数据” 的写模式状态；
